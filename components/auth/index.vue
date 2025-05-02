@@ -82,7 +82,7 @@ const loginUser = async () => {
                 />
               </UFormField>
               <p
-                v-if="useRoute().fullPath =='/admin/auth'"
+                v-if="useRoute().fullPath =='/Admin/auth'"
                 class="text-end text-Sequand underline cursor-pointer font-bold"
                 @click="navigateTo('/admin/auth/forgetPassword')"
               >
@@ -98,7 +98,7 @@ const loginUser = async () => {
                 <span class="font-bold text-lg">Sign in</span>
               </UButton>
               <p
-                v-if="useRoute().fullPath =='/admin/auth'"
+                v-if="useRoute().fullPath =='/Admin/auth'"
                 class="text-center pt-5"
               >
                 You Do Not Have Account?
