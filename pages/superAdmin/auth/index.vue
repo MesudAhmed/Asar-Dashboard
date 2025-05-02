@@ -9,9 +9,10 @@ const userLoginFunction = async (userData: UserModel) => {
   const { data, status } = await useLoginAdmin(userData)
   if (status.value === 'success') {
     const loginData = data.value as LoginResponse
-    router.push('../admin/dashboard')
+    console.log(loginData.data.token)
+    router.push('./dashboard')
 
-    return { success: true, role: loginData.role, token: loginData.token }
+    return { success: true, role: loginData.role, token: loginData.data.token }
   } else {
     return { success: false }
   }

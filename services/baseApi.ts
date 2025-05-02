@@ -22,9 +22,9 @@ export function useAPI<T>(
     })
 }
 export const api = $fetch.create({
-    baseURL: 'http://localhost:3000/',
+    baseURL: 'http://volunteer.test-holooltech.com/api',
     onRequest({ options }) {
-        options.headers.set('Content-Type', 'application/json')
+        options.headers.set('Accept', 'application/json')
         options.headers.set('Authorization', `Bearer ${useGlobalStore().token}`)
         options.headers.set('role', `${useGlobalStore().role}`)
     },

@@ -1,5 +1,5 @@
 export interface LoginResponse {
-    token: string;
+    data: { token: string }
     role: string;
     userId: string;
 }

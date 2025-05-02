@@ -2,5 +2,5 @@ import { useAPI } from '@@/services/baseApi'
 import type { UserModel } from '~/models/userModel'
 
 export const useLoginAdmin = (user: UserModel) => {
-  return useAPI({ url: '/auth/admin/login', payload: user, queryKey: 'user', type: 'POST' })
+  return useAPI({ url: '/government/login', payload: user, queryKey: 'user', type: 'POST' })
 }
