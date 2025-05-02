@@ -11,9 +11,9 @@ const props = defineProps({
 })
 
 const userForm = ref({
-  username: '',
-  email: '',
-  password: '',
+  firstname: '',
+  lastname: '',
+  nationalityId: '',
   gender: '',
   birthDate: shallowRef(new CalendarDate(2025, 1, 1)),
   profileImage: null as string | null,
@@ -88,9 +88,9 @@ const registerUser = async () => {
   }
 
   isLoading.value = false
-  userForm.value.username = ''
-  userForm.value.email = ''
-  userForm.value.password = ''
+  userForm.value.firstname = ''
+  userForm.value.lastname = ''
+  userForm.value.nationalityId = ''
   userForm.value.gender = ''
   userForm.value.profileImage = ''
 }
@@ -119,10 +119,10 @@ const registerUser = async () => {
                   <UFormField
                     required
                     label="Full Name"
-                    name="username"
+                    name="firstname"
                   >
                     <UInput
-                      v-model="userForm.username"
+                      v-model="userForm.firstname"
                       class="border-0 rounded-lg bg-white text-black block"
                       size="lg"
                       highlight
@@ -132,11 +132,11 @@ const registerUser = async () => {
                 <div>
                   <UFormField
                     required
-                    label="Password"
-                    name="password"
+                    label="nationalityId"
+                    name="nationalityId"
                   >
                     <UInput
-                      v-model="userForm.password"
+                      v-model="userForm.nationalityId"
                       class="border-0 rounded-lg bg-white text-black block"
                       size="lg"
                       highlight
@@ -146,11 +146,11 @@ const registerUser = async () => {
                 <div>
                   <UFormField
                     required
-                    label="Email"
-                    name="email"
+                    label="lastname"
+                    name="lastname"
                   >
                     <UInput
-                      v-model="userForm.email"
+                      v-model="userForm.lastname"
                       class="border-0 rounded-lg bg-white text-black block"
                       size="lg"
                       highlight
