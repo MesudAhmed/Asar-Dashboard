@@ -6,7 +6,6 @@ import type { teamsResponse } from '~/models/teamsResponseModel'
 const items: NavigationMenuItem[] = [{
   label: 'Dashboard',
   icon: 'i-lucide-house',
-  to: '/dashboard',
 }, {
   label: 'Teams',
   icon: 'i-lucide-inbox',
@@ -14,11 +13,9 @@ const items: NavigationMenuItem[] = [{
 }, {
   label: 'Admin Requests',
   icon: 'i-lucide-users',
-  to: '/requests',
 }, {
   label: 'Volunteers',
   icon: 'i-lucide-users',
-  to: '/volunteers',
 },
 ]
 
