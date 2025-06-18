@@ -1,22 +1,25 @@
 <script lang="ts" setup>
-import { useLoginUser } from '@@/queries/auth/user'
-import { loginSchema } from '~/schema/loginUser.schema'
+import { useforgetPasswordAdmin } from '@@/queries/auth/admin'
 
-const userForm = ref({
+const forgetPasswordForm = ref({
   email: '',
-  password: '',
 })
-
 const isLoading = ref(false)
-const errorStore = useErrorStore()
 const toast = useToast()
-const form = ref()
+const router = useRouter()
 
-const formIsValid = computed(() => {
-  if (!form.value) return true
-
-  return form.value.errors && Object.keys(form.value.errors).length > 0
-})
+const forgetPasswordAdminFunction = async () => {
+  isLoading.value = true
+  const { status } = await useforgetPasswordAdmin(forgetPasswordForm.value)
+  if (status.value == 'success') {
+    toast.add({ description: 'OTP sent successfully', color: 'success' })
+    await router.push({ 'name': 'admin-auth-otp' })
+  }
+  else {
+    toast.add({ description: 'No account found with this email', color: 'error' })
+  }
+    isLoading.value = false
+}
 </script>
 
 <template>
@@ -33,10 +36,10 @@ const formIsValid = computed(() => {
         </div>
         <UForm
           ref="form"
-          :state="userForm"
+          :state="forgetPasswordForm"
           action="#"
-          :schema="loginSchema"
           class="space-y-4"
+          @submit="forgetPasswordAdminFunction"
         >
           <UFormField
             class="text-primary"
@@ -44,17 +47,17 @@ const formIsValid = computed(() => {
             name="email"
           >
             <UInput
-              v-model="userForm.email"
+              v-model="forgetPasswordForm.email"
               class="border-0 rounded-lg bg-white text-black block"
               size="xl"
               variant="subtle"
             />
           </UFormField>
           <UButton
-            type="button"
+            :loading="isLoading"
+            type="submit"
             block
             class="w-full sm:mt-3 disabled:bg-primary text-white bg-primary hover:bg-blue-950 rounded-full h-12 py-2.5 font-bold text-center"
-            @click="navigateTo('/admin/auth/otp')"
           >
             <span class="font-bold text-lg">Sign in</span>
           </UButton>
