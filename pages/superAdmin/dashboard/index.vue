@@ -1,23 +1,92 @@
 <script lang="ts" setup>
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type { TableColumn } from '@nuxt/ui'
 import { useTeams } from '@@/queries/dashboard/teams'
-import type { teamsResponse } from '~/models/teamsResponseModel'
+import { h, resolveComponent } from 'vue'
+import type { Row } from '@tanstack/vue-table'
+import type { Team, teamsResponse } from '~/models/teamsResponseModel'
 
-const items: NavigationMenuItem[] = [{
-  label: 'Dashboard',
-  icon: 'i-lucide-house',
-}, {
-  label: 'Teams',
-  icon: 'i-lucide-inbox',
-  to: '/',
-}, {
-  label: 'Admin Requests',
-  icon: 'i-lucide-users',
-}, {
-  label: 'Volunteers',
-  icon: 'i-lucide-users',
-},
+const UButton = resolveComponent('UButton')
+const UDropdownMenu = resolveComponent('UDropdownMenu')
+const toast = useToast()
+const router = useRouter()
+const columns: TableColumn<Team>[] = [
+  {
+    accessorKey: 'id',
+    header: 'ID',
+    cell: ({ row }) => `${row.getValue('id')}`,
+  },
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => `${row.getValue('name')}`,
+  },
+  {
+    accessorKey: 'team_name',
+    header: 'Team Name',
+    cell: ({ row }) => `${row.getValue('team_name')}`,
+  },
+  {
+    accessorKey: 'created_at',
+    header: 'Created At',
+    cell: ({ row }) => `${row.getValue('created_at')}`,
+  },
+  {
+    accessorKey: 'address',
+    header: 'Address',
+    cell: ({ row }) => `${row.getValue('address')}`,
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      return h(
+        'div',
+        { class: 'text-right' },
+        h(
+          UDropdownMenu,
+          {
+            content: {
+              align: 'end',
+            },
+            items: getRowItems(row),
+            'aria-label': 'Actions dropdown',
+          },
+          () =>
+            h(UButton, {
+              icon: 'i-lucide-ellipsis-vertical',
+              color: 'neutral',
+              variant: 'ghost',
+              class: 'ml-auto',
+              'aria-label': 'Actions dropdown',
+            }),
+        ),
+      )
+    },
+  },
 ]
+
+function getRowItems(row: Row<Team>) {
+  return [
+    {
+      label: 'Copy Team ID',
+      onSelect() {
+        navigator.clipboard.writeText(row.original.id)
+        toast.add({
+          title: 'User-ID copied to clipboard!',
+          color: 'success',
+          icon: 'i-lucide-circle-check',
+        })
+      },
+    },
+    {
+      label: 'View Team',
+      onSelect() {
+        router.push({ path: '/superAdmin/dashboard/actions', query: { id: row.original.id } })
+      },
+    },
+  ]
+}
+
+const globalFilter = ref('')
 
 const { data } = useTeams()
 const teams = data.value as teamsResponse
@@ -28,7 +97,7 @@ const teams = data.value as teamsResponse
     <UDashboardNavbar class="bg-primary  shadow-sm">
       <template #left>
         <div class="flex items-center">
-          <span class="text-white font-semibold text-lg">ASAR</span>
+          <span class="text-white font-semibold text-xl">ASAR</span>
         </div>
       </template>
       <template #right>
@@ -45,35 +114,28 @@ const teams = data.value as teamsResponse
       <UDashboardSidebar
         resizable
         class="bg-primary overflow-y-auto"
-        :style="{ width: '250px' }"
       >
-        <UNavigationMenu
-          :items="items"
-          class="text-Sequand"
-          orientation="vertical"
-          :ui="{
-            link: 'hover:text-white text-lg py-4 px-4 transition-colors duration-200',
-            list: 'space-y-2',
-          }"
-        />
+        <DashboardSideBar />
       </UDashboardSidebar>
       <div class="flex-1 p-6">
         <div class=" flex justify-between items-center mb-4">
           <h1 class="text-2xl text-primary font-bold pb-2">
             Teams
           </h1>
-          <UButton class="p-3">
-            <Icon
-              name="i-lucide-search"
-              class="mr-2 text-white"
-            />
-            <span class="text-white">Search</span>
-          </UButton>
+          <UInput
+            v-model="globalFilter"
+            class="max-w-sm"
+            placeholder="Searsh..."
+          />
         </div>
         <div class="rounded-lg shadow-xl pb-5">
           <UTable
+            ref="table"
+            v-model:global-filter="globalFilter"
             :data="teams?.data"
-            class="flex-1 pt-0"
+            sticky
+            class="flex-1 pt-0 max-h-[500px]"
+            :columns="columns"
           />
         </div>
       </div>
