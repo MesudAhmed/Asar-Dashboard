@@ -37,11 +37,6 @@ const columns: TableColumn<adminRequestsModel>[] = [
     cell: ({ row }) => `${row.getValue('name')}`,
   },
   {
-    accessorKey: 'national_number',
-    header: 'National Number',
-    cell: ({ row }) => `${row.getValue('national_number')}`,
-  },
-  {
     accessorKey: 'phone',
     header: 'Phone',
     cell: ({ row }) => `${row.getValue('phone')}`,
@@ -67,10 +62,9 @@ const columns: TableColumn<adminRequestsModel>[] = [
     cell: ({ row }) => `${row.getValue('specialization')}`,
   },
 ]
-
 const { data, clear } = useemployees(query.id)
 clear()
-const employees = data.value as teamsResponse
+const employees = computed(() => data.value as teamsResponse | undefined)
 </script>
 
 <template>
@@ -78,7 +72,7 @@ const employees = data.value as teamsResponse
     <UDashboardNavbar class="bg-primary  shadow-sm">
       <template #left>
         <div class="flex items-center">
-          <span class="text-white font-semibold text-xl">Jsoor</span>
+          <span class="text-white font-semibold text-xl">Asar</span>
         </div>
       </template>
       <template #right>
@@ -103,12 +97,11 @@ const employees = data.value as teamsResponse
           <h1 class="text-2xl text-primary font-bold pb-2">
             Employees
           </h1>
-          <pre>{{ data }}</pre>
         </div>
         <div class="rounded-lg shadow-xl pb-5">
           <UTable
             ref="table"
-            :data="data"
+            :data="employees?.data"
             sticky
             class="flex-1 pt-0 max-h-[500px]"
             :columns="columns"
