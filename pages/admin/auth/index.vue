@@ -24,7 +24,7 @@ const userLoginFunction = async (userData: UserModel) => {
       <p class="text-[#868686] pt-3">
         Enter your Email and Password
       </p>
-      <template #button> 
+      <template #button>
         <NuxtLink class="font-bold cursor-pointer text-primary hover:underline">
           Sign in
         </NuxtLink>
