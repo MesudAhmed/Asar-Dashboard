@@ -98,7 +98,7 @@ const loginUser = async () => {
                 <span class="font-bold text-lg">Sign in</span>
               </UButton>
               <p
-                v-if="useRoute().fullPath =='/Admin/auth'"
+                v-if="useRoute().fullPath =='/Admin/auth'||useRoute().fullPath=='/admin/auth'"
                 class="text-center pt-5"
               >
                 You Do Not Have Account?
