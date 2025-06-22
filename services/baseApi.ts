@@ -5,7 +5,7 @@ import { useGlobalStore } from '@@/stores/global'
 export function useAPI<T>(
     options: {
         url: string,
-        payload?: object,
+        payload?: object | FormData,
         queryKey: string,
         isLazy?: boolean
         params?: { skip: Ref<number>, limit: Ref<number> }
