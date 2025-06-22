@@ -3,109 +3,35 @@ import { ref, shallowRef, computed } from 'vue'
 import { CalendarDate } from '@internationalized/date'
 import { useRegisterAdmin } from '@@/queries/auth/admin'
 import type { StepperItem } from '@nuxt/ui'
-import { useToast } from '#imports'
+import type { LoginResponse } from '~/models/loginResponseModel'
+import type { UserModel } from '~/models/userModel'
 
-const toast = useToast()
-const isLoading = ref(false)
+const userRegisterFunction = async (userData: UserModel) => {
+  const { data, status } = await useRegisterUser(userData)
 
-const userForm = ref({
-  full_name: '',
-  national_number: '',
-  birth_date: shallowRef(new CalendarDate(2000, 1, 1)),
-  image: null as File | null,
-  email: '',
-  password: '',
-  team_name: '',
-  log_image: null as File | null,
-  logo: null as File | null,
-  license_number: '',
-  phone: '',
-  gender: '',
-  nationality: '',
-  bank_account_number: '',
-})
+  if (status.value === 'success') {
+    const loginData = data.value as LoginResponse
 
-const gender = ref([
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
+return { success: true, role: loginData.role, token: loginData.token }
+  } else {
+    return { success: false }
+  }
+}
+
+const items = ref<StepperItem[]>([
+  {
+    title: 'User Information',
+    icon: 'i-lucide-house',
+  },
+  {
+    title: 'Team Infromation',
+    icon: 'i-lucide-truck',
+  },
+  {
+    title: 'Admin Information',
+    icon: 'i-lucide-truck',
+  },
 ])
-
-const stepItems = ref<StepperItem[]>([
-  { title: 'User Information', icon: 'i-lucide-user', slot: 'userInformation' },
-  { title: 'Team Information', icon: 'i-lucide-users-round', slot: 'teamInformation' },
-  { title: 'Contact Information', icon: 'i-lucide-contact', slot: 'contactInformation' },
-])
-
-const activeStep = ref(0)
-
-function formatDate(calendarDate: CalendarDate | null): string | null {
-  if (!calendarDate) return null
-
-return `${calendarDate.year}-${String(calendarDate.month).padStart(2, '0')}-${String(calendarDate.day).padStart(2, '0')}`
-}
-
-const addFileToForm = (event: Event, key: 'image' | 'log_image' | 'logo') => {
-  const file = (event.target as HTMLInputElement).files?.[0]
-  if (file) {
-    userForm.value[key] = file
-  }
-}
-
-const isStepValid = computed(() => {
-  if (activeStep.value === 0) {
-    return userForm.value.full_name &&
-           userForm.value.national_number &&
-           userForm.value.birth_date &&
-           userForm.value.image &&
-           userForm.value.password &&
-           userForm.value.gender
-  }
-  if (activeStep.value === 1) {
-    return userForm.value.team_name &&
-           userForm.value.license_number &&
-           userForm.value.logo &&
-           userForm.value.log_image
-  }
-  if (activeStep.value === 2) {
-    return userForm.value.phone &&
-           userForm.value.email &&
-           userForm.value.nationality &&
-           userForm.value.bank_account_number
-  }
-
-return false
-})
-
-const registerUser = async () => {
-  isLoading.value = true
-  try {
-    const formData = new FormData()
-
-    formData.append('full_name', userForm.value.full_name)
-    formData.append('national_number', userForm.value.national_number)
-    formData.append('birth_date', formatDate(userForm.value.birth_date) || '')
-    formData.append('email', userForm.value.email)
-    formData.append('password', userForm.value.password)
-    formData.append('team_name', userForm.value.team_name)
-    formData.append('license_number', userForm.value.license_number)
-    formData.append('phone', userForm.value.phone)
-    formData.append('gender', userForm.value.gender)
-    formData.append('nationality', userForm.value.nationality)
-    formData.append('bank_account_number', userForm.value.bank_account_number)
-
-    if (userForm.value.image) formData.append('image', userForm.value.image)
-    if (userForm.value.logo) formData.append('logo', userForm.value.logo)
-    if (userForm.value.log_image) formData.append('log_image', userForm.value.log_image)
-
-    await useRegisterAdmin(formData)
-
-    toast.add({ description: 'Registered successfully', color: 'success' })
-  } catch (err) {
-    toast.add({ description: 'Registration failed', color: 'error' })
-  } finally {
-    isLoading.value = false
-  }
-}
 </script>
 
 <template>

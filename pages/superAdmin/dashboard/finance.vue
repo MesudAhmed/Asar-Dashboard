@@ -1,12 +1,10 @@
 <script lang="ts" setup>
 import type { TableColumn } from '@nuxt/ui'
-import { h } from 'vue'
-import { useemployees } from '@@/queries/dashboard/employees'
+import { useFinance, useTotalFinance, type FinanceResponse } from '@@/queries/dashboard/finance'
 import type { teamsResponse } from '~/models/teamsResponseModel'
 import { UAvatar } from '#components'
 import type { adminRequestsModel } from '~/models/adminRequestsModel'
 
-const API_BASE_URL = 'http://volunteer.test-holooltech.com/'
 const route = useRoute()
 const query = route.query as { id: string }
 
@@ -17,54 +15,32 @@ const columns: TableColumn<adminRequestsModel>[] = [
     cell: ({ row }) => `${row.getValue('id')}`,
   },
   {
-    accessorKey: 'image',
-    header: 'Image',
-    cell: ({ row }) => {
-      const relativeImagePath = row.getValue('image') as string
-    const fullImageUrl = `${API_BASE_URL}${relativeImagePath}`
-
-    return h(UAvatar, {
-          src: fullImageUrl,
-          alt: 'Team_image',
-          size: 'md',
-          class: 'object-cover',
-        })
-    },
-  },
-  {
     accessorKey: 'name',
     header: 'Name',
     cell: ({ row }) => `${row.getValue('name')}`,
   },
   {
-    accessorKey: 'phone',
-    header: 'Phone',
-    cell: ({ row }) => `${row.getValue('phone')}`,
+    accessorKey: 'details',
+    header: 'Details',
+    cell: ({ row }) => `${row.getValue('details')}`,
   },
   {
-    accessorKey: 'email',
-    header: 'Email',
-    cell: ({ row }) => `${row.getValue('email')}`,
+    accessorKey: 'date',
+    header: 'Date',
+    cell: ({ row }) => `${row.getValue('date')}`,
   },
   {
-    accessorKey: 'address',
-    header: 'Address',
-    cell: ({ row }) => `${row.getValue('address')}`,
-  },
-  {
-    accessorKey: 'position',
-    header: 'Position',
-    cell: ({ row }) => `${row.getValue('position')}`,
-  },
-  {
-    accessorKey: 'specialization',
-    header: 'Specialization',
-    cell: ({ row }) => `${row.getValue('specialization')}`,
+    accessorKey: 'cost',
+    header: 'Cost',
+    cell: ({ row }) => `${row.getValue('cost')}`,
   },
 ]
-const { data, clear } = useemployees(query.id)
-clear()
-const employees = computed(() => data.value as teamsResponse | undefined)
+
+const { data } = useFinance(query.id)
+const Finance = data.value as teamsResponse
+
+const { data: totalFinance } = useTotalFinance(query.id)
+const totalFinanceResponse = totalFinance.value as FinanceResponse
 </script>
 
 <template>
@@ -72,7 +48,7 @@ const employees = computed(() => data.value as teamsResponse | undefined)
     <UDashboardNavbar class="bg-primary  shadow-sm">
       <template #left>
         <div class="flex items-center">
-          <span class="text-white font-semibold text-xl">Asar</span>
+          <span class="text-white font-semibold text-xl">ASAR</span>
         </div>
       </template>
       <template #right>
@@ -93,15 +69,18 @@ const employees = computed(() => data.value as teamsResponse | undefined)
         <DashboardSideBar />
       </UDashboardSidebar>
       <div class="flex-1 p-6">
-        <div class="flex justify-between items-center mb-4">
+        <div class=" flex justify-between items-center mb-4">
           <h1 class="text-2xl text-primary font-bold pb-2">
-            Employees
+            Finance
           </h1>
+          <UCard class="shadow-xl text-primary">
+            {{ totalFinanceResponse?.data[0].total_amount }}
+          </UCard>
         </div>
         <div class="rounded-lg shadow-xl pb-5">
           <UTable
             ref="table"
-            :data="employees?.data"
+            :data="Finance?.data"
             sticky
             class="flex-1 pt-0 max-h-[500px]"
             :columns="columns"

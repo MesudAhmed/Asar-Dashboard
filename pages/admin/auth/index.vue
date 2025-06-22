@@ -8,7 +8,7 @@ const userLoginFunction = async (userData: UserModel) => {
   if (status.value === 'success') {
     const loginData = data.value as LoginResponse
 
-    return { success: true, role: loginData.role, token: loginData.token }
+    return { success: true, role: loginData.role, token: loginData.data.token }
   } else {
     return { success: false }
   }

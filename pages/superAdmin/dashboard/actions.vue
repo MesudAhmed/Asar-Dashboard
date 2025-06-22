@@ -1,7 +1,14 @@
 <script lang="ts" setup>
+import { useTeamAction } from '@@/queries/dashboard/action'
+import type { teamsActionsModel } from '~/models/teamsActionsModel'
+
 const route = useRoute()
 const query = route.query as { id: string }
 const router = useRouter()
+
+const { data: teamActionData, clear } = useTeamAction(query.id)
+clear()
+const teamAction = computed(() => teamActionData.value as teamsActionsModel | undefined)
 </script>
 
 <template>
@@ -36,8 +43,14 @@ const router = useRouter()
           </h1>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-          <div class="w-72">
-            <UCard class="shadow-2xl hover:cursor-pointer hover:bg-[#0007660f]">
+          <div
+            class="w-72"
+            @click="router.push({ path: '/superAdmin/dashboard/finance', query: { id: query.id } })"
+          >
+            <UCard
+              v-if="teamAction?.data"
+              class="shadow-2xl hover:cursor-pointer hover:bg-[#0007660f]"
+            >
               <p class="text-lg text-gray-600">
                 <UButton class="py-3 px-3">
                   <Icon
@@ -52,7 +65,7 @@ const router = useRouter()
                   Total Price
                 </p>
                 <p class="text-primary font-bold text-2xl">
-                  500+
+                  {{ teamAction.data.total_finance }}
                 </p>
               </div>
               <div class="flex justify-between grid-cols-2">
@@ -60,18 +73,34 @@ const router = useRouter()
                   campaigns
                 </p>
                 <p class="text-[#9FBEDD]">
-                  95%
+                  {{ teamAction.data.total_campaigns }}
                 </p>
               </div>
             </UCard>
+            <div
+              v-else
+              class="shadow-2xl h-52 w-full"
+            >
+              <USkeleton
+                class="h-52 w-full border-2 bg-background rounded"
+                :animated="false"
+              />
+            </div>
           </div>
-          <div class="w-72">
-            <UCard class="shadow-2xl hover:cursor-pointer hover:bg-[#0007660f]">
+
+          <div
+            class="w-72"
+            @click="router.push({ path: '/superAdmin/dashboard/compaigns', query: { id: query.id } })"
+          >
+            <UCard
+              v-if="teamAction?.data"
+              class="shadow-2xl hover:cursor-pointer hover:bg-[#0007660f]"
+            >
               <p class="text-lg text-gray-600">
                 <UButton class="py-3 px-3">
                   <Icon
                     name="i-lucide-hand-coins"
-                    class="text-white tetx-xl"
+                    class="text-white text-xl"
                   />
                 </UButton>
                 <span class="mx-4 text-2xl">Compaigns</span>
@@ -83,19 +112,31 @@ const router = useRouter()
               </div>
               <div class="flex justify-between grid-cols-2">
                 <p class="tex-lg text-primary text-2xl">
-                  + 800
+                  {{ teamAction.data.total_campaigns_done }}
                 </p>
                 <p class="text-[#9FBEDD] font-bold text-2xl">
-                  + 950
+                  {{ teamAction.data.total_campaigns_rejected }}
                 </p>
               </div>
             </UCard>
+
+            <div
+              v-else
+              class="shadow-2xl h-52 w-full"
+            >
+              <USkeleton
+                class="h-52 w-full border-2 bg-background rounded"
+                :animated="false"
+              />
+            </div>
           </div>
+
           <div
             class="w-72"
             @click="router.push({ path: '/superAdmin/dashboard/employees', query: { id: query.id } })"
           >
             <UCard
+              v-if="teamAction?.data"
               class="shadow-2xl hover:cursor-pointer hover:bg-[#0007660f]"
             >
               <p class="text-lg text-gray-600">
@@ -107,19 +148,27 @@ const router = useRouter()
                 </UButton>
                 <span class="mx-4 text-2xl">Employees</span>
               </p>
-              <div
-                class="flex justify-center py-5 grid-cols-2 gap-4"
-              >
+              <div class="flex justify-center py-5 grid-cols-2 gap-4">
                 <p class="font-medium pt-1 text-primary">
                   Employees Number
                 </p>
               </div>
               <div class="flex justify-center grid-cols-2">
                 <p class="tex-lg text-primary text-2xl">
-                  + 800
+                  {{ teamAction.data.total_employees }}
                 </p>
               </div>
             </UCard>
+
+            <div
+              v-else
+              class="shadow-2xl h-52 w-full"
+            >
+              <USkeleton
+                class="h-52 w-full border-2 bg-background rounded"
+                :animated="false"
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -189,7 +189,7 @@ const adminRequests = data.value as teamsResponse
     <UDashboardNavbar class="bg-primary  shadow-sm">
       <template #left>
         <div class="flex items-center">
-          <span class="text-white font-semibold text-xl">Jsoor</span>
+          <span class="text-white font-semibold text-xl">Asar</span>
         </div>
       </template>
       <template #right>
