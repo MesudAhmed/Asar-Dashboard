@@ -3,14 +3,14 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const items: NavigationMenuItem[] = [{
   label: 'Finance',
-  icon: 'i-lucide-house',
+  icon: 'i-lucide-dollar-sign',
 }, {
   label: 'Employees',
-  icon: 'i-lucide-inbox',
+  icon: 'i-lucide-users',
   to: '/superAdmin/dashboard',
 }, {
   label: 'Compaigns',
-  icon: 'i-lucide-inbox',
+  icon: 'i-lucide-hand-coins',
   to: '/superAdmin/dashboard',
 }, {
   label: 'Contracts',
