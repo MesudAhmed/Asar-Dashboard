@@ -46,7 +46,7 @@ const form = ref()
             type="submit"
             block
             class="w-full sm:mt-3 disabled:bg-primary text-white bg-primary hover:bg-blue-950 rounded-full h-12 py-2.5 font-bold text-center"
-            @click="navigateTo('../dashboard')"
+            @click="navigateTo('/')"
           >
             <span class="font-bold text-lg">Sign in</span>
           </UButton>
