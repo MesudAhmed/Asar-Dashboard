@@ -54,7 +54,7 @@ const Volunteers = data.value as teamsResponse
       </template>
       <template #right>
         <div class="flex items-center gap-4">
-          <span class="text-white font-medium">Super Admin</span>
+          <span class="text-white font-medium">Admin</span>
           <UAvatar
             src="https://github.com/benjamincanac.png"
             size="md"
