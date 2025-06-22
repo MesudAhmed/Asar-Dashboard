@@ -82,7 +82,7 @@ const loginUser = async () => {
                 />
               </UFormField>
               <p
-                v-if="useRoute().fullPath =='/Admin/auth'"
+                v-if="useRoute().fullPath =='/Admin/auth' || useRoute().fullPath =='/admin/auth'"
                 class="text-end text-Sequand underline cursor-pointer font-bold"
                 @click="navigateTo('/admin/auth/forgetPassword')"
               >
