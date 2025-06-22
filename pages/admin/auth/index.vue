@@ -3,16 +3,21 @@ import { useLoginUser } from '@@/queries/auth/user'
 import type { LoginResponse } from '~/models/loginResponseModel'
 import type { UserModel } from '~/models/userModel'
 
+const router = useRouter()
 const userLoginFunction = async (userData: UserModel) => {
   const { data, status } = await useLoginUser(userData)
   if (status.value === 'success') {
     const loginData = data.value as LoginResponse
+    router.push('./dashboard')
 
-    return { success: true, role: loginData.role, token: loginData.data.token }
+    return { success: true, role: 'Admin', token: loginData.data.token }
   } else {
     return { success: false }
   }
 }
+
+const route = useRoute()
+console.log(route.name)
 </script>
 
 <template>
