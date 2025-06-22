@@ -13,10 +13,13 @@ const modalTitle = ref('')
 const selectedAdmin = ref<adminRequestsModel | null>(null)
 const modalActionType = ref<'approve' | 'reject' | null>(null)
 
+const route = useRoute()
+console.log(route.name)
+
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 
-const API_BASE_URL = 'http://volunteer.test-holooltech.com/'
+const API_BASE_URL = 'http://127.0.0.1:8000/'
 
 const toast = useToast()
 
@@ -180,8 +183,9 @@ function getRowItems(row: Row<adminRequestsModel>) {
 }
 
 const globalFilter = ref('')
-const { data, refresh: refreshAdminRequestsData } = useAdminRequests()
+const { data, refresh: refreshAdminRequestsData, clear } = useAdminRequests()
 const adminRequests = data.value as teamsResponse
+clear()
 </script>
 
 <template>

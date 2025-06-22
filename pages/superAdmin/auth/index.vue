@@ -5,14 +5,16 @@ import type { UserModel } from '~/models/userModel'
 
 const router = useRouter()
 
+const route = useRoute()
+console.log(route.fullPath)
+
 const userLoginFunction = async (userData: UserModel) => {
   const { data, status } = await useLoginAdmin(userData)
   if (status.value === 'success') {
     const loginData = data.value as LoginResponse
-    console.log(loginData.data.token)
     router.push('./dashboard')
 
-    return { success: true, role: loginData.role, token: loginData.data.token }
+    return { success: true, role: 'SuperAdmin', token: loginData.data.token }
   } else {
     return { success: false }
   }

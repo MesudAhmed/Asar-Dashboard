@@ -6,9 +6,11 @@ import type { teamsResponse } from '~/models/teamsResponseModel'
 import { UAvatar } from '#components'
 import type { adminRequestsModel } from '~/models/adminRequestsModel'
 
-const API_BASE_URL = 'http://volunteer.test-holooltech.com/'
+const API_BASE_URL = 'http://127.0.0.1:8000/'
 const route = useRoute()
 const query = route.query as { id: string }
+
+console.log(route.name)
 
 const columns: TableColumn<adminRequestsModel>[] = [
   {
