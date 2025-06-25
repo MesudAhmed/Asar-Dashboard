@@ -5,7 +5,7 @@
       statusMessage: 'Unauthorized',
       message: 'you donot login yet.',
     }"
-    redirect="/auth"
+    redirect="/admin/auth"
     :ui="{ statusMessage: 'text-primary' }"
   />
 </template>

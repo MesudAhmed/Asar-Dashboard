@@ -18,7 +18,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   if (token && role === RoleName.SuperAdmin) {
     if (!superAdminRoutes.includes(to.name?.toString() || '')) {
-      return navigateTo('/unauthorized')
+      return navigateTo('/UnauthorizedPage')
     }
   }
 

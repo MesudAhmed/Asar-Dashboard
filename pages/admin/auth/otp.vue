@@ -36,7 +36,7 @@ const handleSubmit = async () => {
 
   if (status.value === 'success') {
     toast.add({ description: 'OTP verified successfully', color: 'green' })
-    router.push('/admin/resetPassword')
+    router.push('/admin/auth/resetPassword')
   } else {
     toast.add({ description: error.value?.data?.message || 'OTP verification failed', color: 'red' })
   }

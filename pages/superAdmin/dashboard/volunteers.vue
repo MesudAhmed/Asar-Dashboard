@@ -44,11 +44,6 @@ const columns: TableColumn<adminRequestsModel>[] = [
     cell: ({ row }) => `${row.getValue('email')}`,
   },
   {
-    accessorKey: 'gender',
-    header: 'Gender',
-    cell: ({ row }) => `${row.getValue('gender')}`,
-  },
-  {
     accessorKey: 'nationality',
     header: 'Nationality',
     cell: ({ row }) => `${row.getValue('nationality')}`,
@@ -65,8 +60,9 @@ const columns: TableColumn<adminRequestsModel>[] = [
   },
 ]
 
-const { data: getVolunteers, refresh: refreshGetVolunteers, pending } = useVolunteers()
+const { data: getVolunteers, refresh: refreshGetVolunteers, pending, clear } = useVolunteers()
 const Volunteers = computed(() => getVolunteers.value as teamsResponse | undefined)
+clear()
 </script>
 
 <template>
