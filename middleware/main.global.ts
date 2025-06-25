@@ -7,24 +7,24 @@ const superAdminRoutes = ['superAdmin-dashboard', 'superAdmin-dashboard-adminReq
 export default defineNuxtRouteMiddleware((to, from) => {
   const { role, token } = useGlobalStore()
 
-//   if (token && to.name && to.name.toString().startsWith('superAdmin-auth')) {
-//     return navigateTo({
-//       path:
-//         role == RoleName.SuperAdmin
-//           ? '/superAdmin/dashboard'
-//           : '/',
-//     })
-//   }
+  if (token && to.name && to.name.toString().startsWith('superAdmin-auth')) {
+    return navigateTo({
+      path:
+        role == RoleName.SuperAdmin
+          ? '/superAdmin/dashboard'
+          : '/',
+    })
+  }
 
-//   if (token && role === RoleName.SuperAdmin) {
-//     if (!superAdminRoutes.includes(to.name?.toString() || '')) {
-//       return navigateTo('/unauthorized')
-//     }
-//   }
+  if (token && role === RoleName.SuperAdmin) {
+    if (!superAdminRoutes.includes(to.name?.toString() || '')) {
+      return navigateTo('/unauthorized')
+    }
+  }
 
-//  if (!token?.length && to.path !== '/admin/auth' && to.path !== '/superAdmin/auth') {
-//   return navigateTo({ path: '/admin/auth' })
-// }
+ if (!token?.length && to.path !== '/admin/auth' && to.path !== '/superAdmin/auth') {
+  return navigateTo({ path: '/admin/auth' })
+}
 
   return true
 })

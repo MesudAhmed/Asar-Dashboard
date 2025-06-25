@@ -6,5 +6,6 @@
       message: 'you donot login yet.',
     }"
     redirect="/auth"
+    :ui="{ statusMessage: 'text-primary' }"
   />
 </template>
