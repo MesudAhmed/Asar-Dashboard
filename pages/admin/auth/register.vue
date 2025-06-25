@@ -6,6 +6,7 @@ import { useToast } from '#imports'
 
 const toast = useToast()
 const isLoading = ref(false)
+const router = useRouter()
 
 const userForm = ref({
   full_name: '',
@@ -75,7 +76,6 @@ const registerUser = async () => {
 
   try {
     const formData = new FormData()
-
     formData.append('full_name', userForm.value.full_name)
     formData.append('national_number', userForm.value.national_number)
     formData.append('birth_date', userForm.value.birth_date)
@@ -88,18 +88,16 @@ const registerUser = async () => {
     formData.append('nationality', userForm.value.nationality)
     formData.append('address', userForm.value.address)
     formData.append('bank_account_number', userForm.value.bank_account_number)
-
     if (userForm.value.image) formData.append('image', userForm.value.image)
     if (userForm.value.logo) formData.append('logo', userForm.value.logo)
     if (userForm.value.log_image) formData.append('log_image', userForm.value.log_image)
-
-    await useRegisterAdmin(formData)
-
-    toast.add({ description: 'Registered successfully', color: 'success' })
+    const response = await useRegisterAdmin(formData)
     const globalStore = useGlobalStore()
     globalStore.role = 'Admin'
-  } catch (err) {
-    toast.add({ description: 'Registration failed', color: 'error' })
+    globalStore.name = response.data.value.data.full_name
+    globalStore.email = response.data.value.data.email
+    toast.add({ description: 'Registered successfully', color: 'success' })
+    router.push('/admin/auth')
   } finally {
     isLoading.value = false
   }

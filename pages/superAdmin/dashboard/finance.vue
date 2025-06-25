@@ -36,31 +36,21 @@ const columns: TableColumn<adminRequestsModel>[] = [
   },
 ]
 
-const { data } = useFinance(query.id)
-const Finance = data.value as teamsResponse
+const { data, refresh: refreshFinance } = useFinance(() => query.id)
+const Finance = computed(() => data.value as teamsResponse | undefined)
 
-const { data: totalFinance } = useTotalFinance(query.id)
-const totalFinanceResponse = totalFinance.value as FinanceResponse
+const { data: totalFinance, refresh: refreshTotalFinance } = useTotalFinance(() => query.id)
+const totalFinanceResponse = computed(() => totalFinance.value as FinanceResponse | undefined)
+
+onMounted(() => {
+  refreshFinance()
+  refreshTotalFinance()
+})
 </script>
 
 <template>
   <div class="flex bg-[#F5F5F5] flex-col h-screen overflow-hidden">
-    <UDashboardNavbar class="bg-primary  shadow-sm">
-      <template #left>
-        <div class="flex items-center">
-          <span class="text-white font-semibold text-xl">ASAR</span>
-        </div>
-      </template>
-      <template #right>
-        <div class="flex items-center gap-4">
-          <span class="text-white font-medium">Super Admin</span>
-          <UAvatar
-            src="https://github.com/benjamincanac.png"
-            size="md"
-          />
-        </div>
-      </template>
-    </UDashboardNavbar>
+    <DashboardNavBar />
     <div class="flex flex-1">
       <UDashboardSidebar
         resizable
@@ -77,7 +67,16 @@ const totalFinanceResponse = totalFinance.value as FinanceResponse
             {{ totalFinanceResponse?.data[0].total_amount }}
           </UCard>
         </div>
-        <div class="rounded-lg shadow-xl pb-5">
+        <div
+          v-if="pending"
+          class="text-center text-primary text-2xl"
+        >
+          Loading...
+        </div>
+        <div
+          v-else-if="Finance?.data"
+          class="rounded-lg shadow-xl pb-5"
+        >
           <UTable
             ref="table"
             :data="Finance?.data"

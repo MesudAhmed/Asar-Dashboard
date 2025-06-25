@@ -1,31 +1,19 @@
-import { useAPI } from '@@/services/baseApi'
+import { api, useAPI } from '@@/services/baseApi'
 
-export const useFinance = (id: string | number) => {
+export const useFinance = (id: string | number | (() => string | number)) => {
   return useAPI({
-    url: `/government/teams/${id}/total-finance`,
+    url: () => `/government/teams/${toValue(id)}/total-finance`,
     type: 'GET',
     queryKey: 'finance',
     isLazy: true,
   })
 }
 
-export const useTotalFinance = (id: string | number) => {
+export const useTotalFinance = (id: string | number | (() => string | number)) => {
   return useAPI({
-    url: `/government/teams/${id}/list-finance`,
+    url: () => `/government/teams/${toValue(id)}/list-finance`,
     type: 'GET',
     queryKey: 'totalFinance',
     isLazy: true,
   })
-}
-
-export interface FinanceRecord {
-  id: number;
-  total_amount: string;
-  payment: string;
-  date: string;
-}
-
-export interface FinanceResponse {
-  success: boolean;
-  data: FinanceRecord[];
 }

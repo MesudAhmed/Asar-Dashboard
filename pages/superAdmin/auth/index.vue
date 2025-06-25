@@ -4,17 +4,13 @@ import type { LoginResponse } from '~/models/loginResponseModel'
 import type { UserModel } from '~/models/userModel'
 
 const router = useRouter()
-
-const route = useRoute()
-console.log(route.fullPath)
-
 const userLoginFunction = async (userData: UserModel) => {
   const { data, status } = await useLoginAdmin(userData)
   if (status.value === 'success') {
     const loginData = data.value as LoginResponse
     router.push('./dashboard')
 
-    return { success: true, role: 'SuperAdmin', token: loginData.data.token }
+    return { success: true, role: 'SuperAdmin', token: loginData.data.token, name: loginData.data.government.name, email: loginData.data.government.email }
   } else {
     return { success: false }
   }

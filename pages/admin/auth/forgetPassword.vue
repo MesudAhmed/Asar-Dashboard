@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useforgetPasswordAdmin } from '@@/queries/auth/admin'
+import { useGlobalStore } from '@@/stores/global'
 
 const forgetPasswordForm = ref({
   email: '',
@@ -13,6 +14,9 @@ const forgetPasswordAdminFunction = async () => {
   const { status } = await useforgetPasswordAdmin(forgetPasswordForm.value)
   if (status.value == 'success') {
     toast.add({ description: 'OTP sent successfully', color: 'success' })
+    const globalStore = useGlobalStore()
+    globalStore.email = forgetPasswordForm.value.email
+
     await router.push({ 'name': 'admin-auth-otp' })
   }
   else {

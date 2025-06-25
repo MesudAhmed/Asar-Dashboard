@@ -6,11 +6,9 @@ import type { teamsResponse } from '~/models/teamsResponseModel'
 import { UAvatar } from '#components'
 import type { adminRequestsModel } from '~/models/adminRequestsModel'
 
-const API_BASE_URL = 'http://127.0.0.1:8000/'
+const API_BASE_URL = 'http://volunteer.test-holooltech.com/'
 const route = useRoute()
 const query = route.query as { id: string }
-
-console.log(route.name)
 
 const columns: TableColumn<adminRequestsModel>[] = [
   {
@@ -64,29 +62,16 @@ const columns: TableColumn<adminRequestsModel>[] = [
     cell: ({ row }) => `${row.getValue('specialization')}`,
   },
 ]
-const { data, clear } = useemployees(query.id)
-clear()
+const { data, refresh: refreshEmployees, pending } = useemployees(() => query.id)
+onMounted(() => {
+  refreshEmployees()
+})
 const employees = computed(() => data.value as teamsResponse | undefined)
 </script>
 
 <template>
   <div class="flex bg-[#F5F5F5] flex-col h-screen overflow-hidden">
-    <UDashboardNavbar class="bg-primary  shadow-sm">
-      <template #left>
-        <div class="flex items-center">
-          <span class="text-white font-semibold text-xl">Asar</span>
-        </div>
-      </template>
-      <template #right>
-        <div class="flex items-center gap-4">
-          <span class="text-white font-medium">Super Admin</span>
-          <UAvatar
-            src="https://github.com/benjamincanac.png"
-            size="md"
-          />
-        </div>
-      </template>
-    </UDashboardNavbar>
+    <DashboardNavBar />
     <div class="flex flex-1">
       <UDashboardSidebar
         resizable
@@ -100,7 +85,16 @@ const employees = computed(() => data.value as teamsResponse | undefined)
             Employees
           </h1>
         </div>
-        <div class="rounded-lg shadow-xl pb-5">
+        <div
+          v-if="pending"
+          class="text-center text-primary text-2xl"
+        >
+          Loading...
+        </div>
+        <div
+          v-else-if="employees?.data"
+          class="rounded-lg shadow-xl pb-5"
+        >
           <UTable
             ref="table"
             :data="employees?.data"

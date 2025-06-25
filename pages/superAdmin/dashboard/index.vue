@@ -88,28 +88,13 @@ function getRowItems(row: Row<Team>) {
 
 const globalFilter = ref('')
 
-const { data } = useTeams()
-const teams = data.value as teamsResponse
+const { data: getteams, refresh: refreshGetTeams, pending } = useTeams()
+const teams = computed(() => getteams.value as teamsResponse | undefined)
 </script>
 
 <template>
   <div class="flex bg-[#F5F5F5] flex-col h-screen overflow-hidden">
-    <UDashboardNavbar class="bg-primary  shadow-sm">
-      <template #left>
-        <div class="flex items-center">
-          <span class="text-white font-semibold text-xl">ASAR</span>
-        </div>
-      </template>
-      <template #right>
-        <div class="flex items-center gap-4">
-          <span class="text-white font-medium">Super Admin</span>
-          <UAvatar
-            src="https://github.com/benjamincanac.png"
-            size="md"
-          />
-        </div>
-      </template>
-    </UDashboardNavbar>
+    <DashboardNavBar />
     <div class="flex flex-1">
       <UDashboardSidebar
         resizable
@@ -128,7 +113,16 @@ const teams = data.value as teamsResponse
             placeholder="Searsh..."
           />
         </div>
-        <div class="rounded-lg shadow-xl pb-5">
+        <div
+          v-if="pending"
+          class="text-center text-primary text-2xl"
+        >
+          Loading...
+        </div>
+        <div
+          v-else-if="teams?.data"
+          class="rounded-lg shadow-xl pb-5"
+        >
           <UTable
             ref="table"
             v-model:global-filter="globalFilter"

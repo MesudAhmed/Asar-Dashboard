@@ -1,21 +1,24 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const items: NavigationMenuItem[] = [{
-  label: 'Finance',
-  icon: 'i-lucide-dollar-sign',
-}, {
+const items: NavigationMenuItem[] = [
+  // {
+  // label: 'Finance',
+  // icon: 'i-lucide-dollar-sign',
+  // to: '/admin/dashboard/finance',
+  // },
+ {
   label: 'Employees',
   icon: 'i-lucide-users',
-  to: '/superAdmin/dashboard',
+  to: '/admin/dashboard/employees',
 }, {
   label: 'Compaigns',
   icon: 'i-lucide-hand-coins',
-  to: '/superAdmin/dashboard',
+  to: '/admin/dashboard/compaigns',
 }, {
   label: 'Contracts',
   icon: 'i-lucide-inbox',
-  to: '/superAdmin/dashboard',
+  to: '/admin/dashboard/contracts',
 },
 ]
 </script>

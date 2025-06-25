@@ -45,22 +45,7 @@ const totalFinanceResponse = totalFinance.value as FinanceResponse
 
 <template>
   <div class="flex bg-[#F5F5F5] flex-col h-screen overflow-hidden">
-    <UDashboardNavbar class="bg-primary  shadow-sm">
-      <template #left>
-        <div class="flex items-center">
-          <span class="text-white font-semibold text-xl">ASAR</span>
-        </div>
-      </template>
-      <template #right>
-        <div class="flex items-center gap-4">
-          <span class="text-white font-medium">Admin</span>
-          <UAvatar
-            src="https://github.com/benjamincanac.png"
-            size="md"
-          />
-        </div>
-      </template>
-    </UDashboardNavbar>
+    <DashboardNavBar />
     <div class="flex flex-1">
       <UDashboardSidebar
         resizable

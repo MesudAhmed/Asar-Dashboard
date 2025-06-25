@@ -3,29 +3,14 @@ import { useCurrentTeamAction, useTeamAction } from '@@/queries/dashboard/action
 import type { currnetTeamsActionsModel } from '~/models/currentTeamAction'
 
 const router = useRouter()
-const { data: teamActionData, clear } = useCurrentTeamAction()
-clear()
-const teamAction = computed(() => teamActionData.value as currnetTeamsActionsModel | undefined)
+const { data: teamActionData, refresh: refreshTeamAction } = useCurrentTeamAction()
+onMounted(() => refreshTeamAction())
+const teamAction = computed(() => teamActionData.value as teamsActionsModel | undefined)
 </script>
 
 <template>
   <div class="flex bg-[#F5F5F5] flex-col h-screen overflow-hidden">
-    <UDashboardNavbar class="bg-primary  shadow-sm">
-      <template #left>
-        <div class="flex items-center">
-          <span class="text-white font-semibold text-xl">ASAR</span>
-        </div>
-      </template>
-      <template #right>
-        <div class="flex items-center gap-4">
-          <span class="text-white font-medium">Super Admin</span>
-          <UAvatar
-            src="https://github.com/benjamincanac.png"
-            size="md"
-          />
-        </div>
-      </template>
-    </UDashboardNavbar>
+    <DashboardNavBar />
     <div class="flex flex-1">
       <UDashboardSidebar
         resizable
@@ -40,7 +25,7 @@ const teamAction = computed(() => teamActionData.value as currnetTeamsActionsMod
           </h1>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-          <div
+          <!-- <div
             class="w-72"
             @click="router.push({ path: '/admin/dashboard/finance' })"
           >
@@ -83,7 +68,7 @@ const teamAction = computed(() => teamActionData.value as currnetTeamsActionsMod
                 :animated="false"
               />
             </div>
-          </div>
+          </div> -->
 
           <div
             class="w-72"
@@ -190,20 +175,12 @@ const teamAction = computed(() => teamActionData.value as currnetTeamsActionsMod
                   {{ teamAction.data.campaigns.total_count }}
                 </p>
               </div>
-              <div class="flex justify-center py-5 grid-cols-2 gap-4">
+              <div class="flex justify-center grid-cols-2 gap-4">
                 <p class="font-medium pt-1 text-primary">
                   Completed {{ teamAction.data.campaigns.completed_percentage }}
                 </p>
                 <p class="font-medium pt-1 text-primary">
-                  UN Completed {{ teamAction.data.campaigns.uncompleted_percentage }}
-                </p>
-              </div>
-              <div class="flex justify-between grid-cols-2">
-                <p class="tex-lg text-primary text-2xl">
-                  {{ teamAction.data.campaigns.completed_count }}
-                </p>
-                <p class="text-[#9FBEDD] font-bold text-2xl">
-                  {{ teamAction.data.campaigns.uncompleted_count }}
+                  UN_Completed {{ teamAction.data.campaigns.uncompleted_percentage }}
                 </p>
               </div>
             </UCard>

@@ -2,9 +2,6 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const items: NavigationMenuItem[] = [{
-  label: 'Dashboard',
-  icon: 'i-lucide-house',
-}, {
   label: 'Teams',
   icon: 'i-lucide-inbox',
   to: '/superAdmin/dashboard',

@@ -1,8 +1,8 @@
-import { useAPI } from '@@/services/baseApi'
+import { api, useAPI } from '@@/services/baseApi'
 
-export const useTeamAction = (id: string | number) => {
+export const useTeamAction = (id: string | number | (() => string | number)) => {
   return useAPI({
-    url: `/government/teams/${id}`,
+    url: () => `/government/teams/${toValue(id)}`,
     type: 'GET',
     queryKey: 'teamsAction',
     isLazy: true,
@@ -10,10 +10,5 @@ export const useTeamAction = (id: string | number) => {
 }
 
 export const useCurrentTeamAction = () => {
-  return useAPI({
-    url: `/teams/statistics`,
-    type: 'GET',
-    queryKey: 'currentTeamAction',
-    isLazy: true,
-  })
+  return useAsyncData('currentTeamAction', () => api(`/teams/statistics`, {}))
 }

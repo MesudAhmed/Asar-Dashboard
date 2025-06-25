@@ -59,30 +59,16 @@ const columns: TableColumn<adminRequestsModel>[] = [
 ]
 const campaignsData = ref<teamsActionsModel | undefined>()
 
-const { data: campaignsDataRaw, clear } = usecompaigns(query.id)
-clear()
-
+const { data: campaignsDataRaw, refresh: refreshCampaigns, pending } = usecompaigns(() => query.id)
 const campaigns = computed(() => campaignsDataRaw.value as teamCampaignsModel | undefined)
+onMounted(() => {
+  refreshCampaigns()
+})
 </script>
 
 <template>
   <div class="flex bg-[#F5F5F5] flex-col h-screen overflow-hidden">
-    <UDashboardNavbar class="bg-primary  shadow-sm">
-      <template #left>
-        <div class="flex items-center">
-          <span class="text-white font-semibold text-xl">Asar</span>
-        </div>
-      </template>
-      <template #right>
-        <div class="flex items-center gap-4">
-          <span class="text-white font-medium">Super Admin</span>
-          <UAvatar
-            src="https://github.com/benjamincanac.png"
-            size="md"
-          />
-        </div>
-      </template>
-    </UDashboardNavbar>
+    <DashboardNavBar />
     <div class="flex flex-1">
       <UDashboardSidebar
         resizable
@@ -93,18 +79,27 @@ const campaigns = computed(() => campaignsDataRaw.value as teamCampaignsModel | 
       <div class="flex-1 p-6">
         <div class="flex justify-between items-center mb-4">
           <h1 class="text-2xl text-primary font-bold pb-2">
-            Employees
+            Compaigns
           </h1>
         </div>
         <UTabs
           :items="tabs"
-          class="w-full text-primary"
+          class="w-full "
           color="secondary"
           size="xl"
           variant="pill"
         >
           <template #Ongoing_Campaigns>
-            <div class="rounded-lg shadow-xl pb-5">
+            <div
+              v-if="pending"
+              class="text-center text-primary text-2xl"
+            >
+              Loading...
+            </div>
+            <div
+              v-else-if="campaigns?.data"
+              class="rounded-lg shadow-xl pb-5"
+            >
               <UTable
                 ref="table"
                 :data="campaigns?.data.ongoing_campaigns"
@@ -116,7 +111,16 @@ const campaigns = computed(() => campaignsDataRaw.value as teamCampaignsModel | 
           </template>
           <template #Campaigns_Implemented>
             <h1 class="text-primay">
-              <div class="rounded-lg shadow-xl pb-5">
+              <div
+                v-if="pending"
+                class="text-center text-primary text-2xl"
+              >
+                Loading...
+              </div>
+              <div
+                v-else-if="campaigns?.data"
+                class="rounded-lg shadow-xl pb-5"
+              >
                 <UTable
                   ref="table"
                   :data="campaigns?.data.completed_campaigns"

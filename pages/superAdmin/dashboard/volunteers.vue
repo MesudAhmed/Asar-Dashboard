@@ -6,7 +6,7 @@ import type { teamsResponse } from '~/models/teamsResponseModel'
 import { UAvatar } from '#components'
 import type { adminRequestsModel } from '~/models/adminRequestsModel'
 
-const API_BASE_URL = 'http://127.0.0.1:8000//'
+const API_BASE_URL = 'http://volunteer.test-holooltech.com/'
 const columns: TableColumn<adminRequestsModel>[] = [
   {
     accessorKey: 'id',
@@ -65,28 +65,13 @@ const columns: TableColumn<adminRequestsModel>[] = [
   },
 ]
 
-const { data } = useVolunteers()
-const Volunteers = data.value as teamsResponse
+const { data: getVolunteers, refresh: refreshGetVolunteers, pending } = useVolunteers()
+const Volunteers = computed(() => getVolunteers.value as teamsResponse | undefined)
 </script>
 
 <template>
   <div class="flex bg-[#F5F5F5] flex-col h-screen overflow-hidden">
-    <UDashboardNavbar class="bg-primary  shadow-sm">
-      <template #left>
-        <div class="flex items-center">
-          <span class="text-white font-semibold text-xl">ASAR</span>
-        </div>
-      </template>
-      <template #right>
-        <div class="flex items-center gap-4">
-          <span class="text-white font-medium">Super Admin</span>
-          <UAvatar
-            src="https://github.com/benjamincanac.png"
-            size="md"
-          />
-        </div>
-      </template>
-    </UDashboardNavbar>
+    <DashboardNavBar />
     <div class="flex flex-1">
       <UDashboardSidebar
         resizable
@@ -100,7 +85,16 @@ const Volunteers = data.value as teamsResponse
             Volunteers
           </h1>
         </div>
-        <div class="rounded-lg shadow-xl pb-5">
+        <div
+          v-if="pending"
+          class="text-center text-primary text-2xl"
+        >
+          Loading...
+        </div>
+        <div
+          v-else-if="Volunteers?.data"
+          class="rounded-lg shadow-xl pb-5"
+        >
           <UTable
             ref="table"
             :data="Volunteers?.data"
