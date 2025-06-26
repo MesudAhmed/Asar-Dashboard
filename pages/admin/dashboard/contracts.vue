@@ -50,7 +50,7 @@ async function confirmDelete() {
     await execute()
     toast.add({
       title: `${selectedContracts.value.content} It was successfully deleted`,
-      color: 'red',
+      color: 'error',
       icon: 'i-lucide-trash-2',
     })
     vrefreshContracts()
@@ -60,7 +60,7 @@ async function confirmDelete() {
     toast.add({
       title: `Failed to delete ${selectedContracts.value.content}`,
       description: err?.data?.message,
-      color: 'red',
+      color: 'error',
       icon: 'i-lucide-alert-triangle',
     })
   } finally {
@@ -79,7 +79,7 @@ function getRowItems(row: Row<adminRequestsModel>) {
         navigator.clipboard.writeText(admin.id)
         toast.add({
           title: 'ID copied to clipboard!',
-          color: 'green',
+          color: 'success',
           icon: 'i-lucide-check',
         })
       },

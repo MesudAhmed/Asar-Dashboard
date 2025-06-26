@@ -8,3 +8,7 @@ export const useLoginUser = (user: UserModel) => {
 export const useRegisterUser = (user: UserModel) => {
   return useAPI({ url: '/auth/user/register', payload: user, queryKey: 'user', type: 'POST' })
 }
+
+export const useLogout = () => {
+  return useAPI({ url: '/logout', queryKey: 'logout', type: 'POST' })
+}

@@ -17,6 +17,8 @@ const tabs = ref<TabsItem[]>([
   },
 ])
 
+const route = useRoute()
+
 const columns: TableColumn<adminRequestsModel>[] = [
   {
     accessorKey: 'id',

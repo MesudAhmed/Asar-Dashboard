@@ -12,6 +12,8 @@ const router = useRouter()
 
 const pending = ref(false)
 
+const route = useRoute()
+
 const updatePasswordAdminFunction = async () => {
   pending.value = true
   try {

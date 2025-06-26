@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useCurrentTeamAction, useTeamAction } from '@@/queries/dashboard/action'
+import { useCurrentTeamAction } from '@@/queries/dashboard/action'
 import type { currnetTeamsActionsModel } from '~/models/currentTeamAction'
 
 const router = useRouter()
 const { data: teamActionData, refresh: refreshTeamAction } = useCurrentTeamAction()
 onMounted(() => refreshTeamAction())
-const teamAction = computed(() => teamActionData.value as teamsActionsModel | undefined)
+const teamAction = computed(() => teamActionData.value as currnetTeamsActionsModel | undefined)
 </script>
 
 <template>
@@ -25,51 +25,6 @@ const teamAction = computed(() => teamActionData.value as teamsActionsModel | un
           </h1>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-          <!-- <div
-            class="w-72"
-            @click="router.push({ path: '/admin/dashboard/finance' })"
-          >
-            <UCard
-              v-if="teamAction?.data"
-              class="shadow-2xl hover:cursor-pointer hover:bg-[#0007660f]"
-            >
-              <p class="text-lg text-gray-600">
-                <UButton class="py-3 px-3">
-                  <Icon
-                    name="i-lucide-dollar-sign"
-                    class="text-white text-xl"
-                  />
-                </UButton>
-                <span class="mx-4 text-2xl">Finance</span>
-              </p>
-              <div class="flex justify-between py-5 grid-cols-2 gap-4">
-                <p class="font-medium pt-1 text-black">
-                  Total Price
-                </p>
-                <p class="text-primary font-bold text-2xl">
-                  {{ teamAction.data.finance.total_price }}
-                </p>
-              </div>
-              <div class="flex justify-between grid-cols-2">
-                <p class="tex-lg text-gray-600">
-                  campaigns
-                </p>
-                <p class="text-[#9FBEDD]">
-                  {{ teamAction.data.campaigns.total_count }}
-                </p>
-              </div>
-            </UCard>
-            <div
-              v-else
-              class="shadow-2xl h-52 w-full"
-            >
-              <USkeleton
-                class="h-52 w-full border-2 bg-background rounded"
-                :animated="false"
-              />
-            </div>
-          </div> -->
-
           <div
             class="w-72"
             @click="router.push({ path: '/admin/dashboard/employees' })"

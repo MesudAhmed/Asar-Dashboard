@@ -20,7 +20,7 @@ const isLoading = ref(false)
 
 const handleSubmit = async () => {
   if (formIsValid.value) {
-    toast.add({ description: 'Please enter the complete OTP', color: 'red' })
+    toast.add({ description: 'Please enter the complete OTP', color: 'error' })
 
     return
   }
@@ -35,13 +35,15 @@ const handleSubmit = async () => {
   await execute()
 
   if (status.value === 'success') {
-    toast.add({ description: 'OTP verified successfully', color: 'green' })
+    toast.add({ description: 'OTP verified successfully', color: 'success' })
     router.push('/admin/auth/resetPassword')
   } else {
-    toast.add({ description: error.value?.data?.message || 'OTP verification failed', color: 'red' })
+    toast.add({ description: error.value?.data?.message || 'OTP verification failed', color: 'error' })
   }
 
   isLoading.value = false
+
+  const route = useRoute()
 }
 </script>
 

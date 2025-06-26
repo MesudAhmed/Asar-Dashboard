@@ -50,7 +50,7 @@ async function confirmDelete() {
     await execute()
     toast.add({
       title: `${selectedEmployee.value.full_name} It was successfully deleted`,
-      color: 'red',
+      color: 'error',
       icon: 'i-lucide-trash-2',
     })
     refreshEmployees()
@@ -60,7 +60,7 @@ async function confirmDelete() {
     toast.add({
       title: `Failed to delete ${selectedEmployee.value.full_name}`,
       description: err?.data?.message,
-      color: 'red',
+      color: 'error',
       icon: 'i-lucide-alert-triangle',
     })
   } finally {
@@ -79,7 +79,7 @@ function getRowItems(row: Row<adminRequestsModel>) {
         navigator.clipboard.writeText(admin.id)
         toast.add({
           title: 'ID copied to clipboard!',
-          color: 'green',
+          color: 'success',
           icon: 'i-lucide-check',
         })
       },
@@ -205,7 +205,7 @@ async function submitNewEmployee() {
     await execute()
     toast.add({
       title: 'Employee created successfully',
-      color: 'green',
+      color: 'success',
       icon: 'i-lucide-check-circle',
     })
     refreshEmployees()
@@ -226,7 +226,7 @@ async function submitNewEmployee() {
     toast.add({
       title: 'Failed to create employee',
       description: err?.data?.message,
-      color: 'red',
+      color: 'error',
       icon: 'i-lucide-alert-triangle',
     })
   } finally {
@@ -357,7 +357,7 @@ async function submitNewEmployee() {
       </template>
       <template #footer>
         <UButton
-          color="gray"
+          color="neutral"
           variant="ghost"
           class="bg-gray-500 text-white"
           @click="createModalOpen = false"
